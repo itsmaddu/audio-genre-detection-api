@@ -21,7 +21,7 @@ def procurar_e_baixar_preview(nome_musica):
 
     item = resultado['tracks']['items'][0]
     nome = item['name']
-    url_preview = item['preview_url'] 
+    url_preview = item.get('preview_url') 
     
     if not url_preview:
         return None, "Esta música não tem uma amostra de 30 segundos disponível."
