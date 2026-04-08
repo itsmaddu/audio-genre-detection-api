@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+cookies.txt
 
 # Ignorar ambientes virtuais (se você estiver usando venv)
 venv/

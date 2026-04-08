@@ -6,23 +6,27 @@ st.set_page_config(page_title="Classificador Musical", page_icon="🎧", layout=
 st.title("🎧 Classificador de Gêneros Musicais")
 st.write("Descubra o gênero de qualquer música usando Inteligência Artificial!")
 
-# Criando as abas para separar as funcionalidades visualmente
-aba_spotify, aba_upload = st.tabs(["🔍 Buscar no Spotify", "📁 Enviar Arquivo Local"])
+# 1. Mudamos o nome da aba para YouTube
+aba_youtube, aba_upload = st.tabs(["▶️ Buscar no YouTube", "📁 Enviar Arquivo Local"])
 
-# --- ABA 1: PESQUISA NO SPOTIFY ---
-with aba_spotify:
-    st.write("Digite o nome da música e do artista. A IA vai ouvir uma prévia de 30 segundos!")
-    nome_musica = st.text_input("Qual música você quer analisar?", placeholder="Ex: Numb - Linkin Park, Californication - Red Hot...")
+# --- ABA 1: PESQUISA NO YOUTUBE ---
+with aba_youtube:
+    st.write("Digite o nome da música e do artista. A IA vai baixar o áudio e analisar 30 segundos!")
     
-    if st.button("Pesquisar e Classificar 🚀"):
+    # 2. Formulário para a tecla 'Enter' funcionar
+    with st.form(key="form_pesquisa_youtube"):
+        nome_musica = st.text_input("Qual música você quer analisar?", placeholder="Ex: Numb - Linkin Park, Californication - Red Hot...")
+        botao_pesquisar = st.form_submit_button("Pesquisar e Classificar 🚀")
+    
+    if botao_pesquisar:
         if not nome_musica:
             st.warning("Por favor, digite o nome de uma música antes de pesquisar.")
         else:
-            with st.spinner(f"Buscando '{nome_musica}' no Spotify e analisando as batidas... 🧠"):
+            with st.spinner(f"Buscando '{nome_musica}' no YouTube e analisando as batidas... 🧠"):
                 try:
-                    # Avisamos a API (que vamos atualizar já já) para buscar o texto
+                    # 3. Rota atualizada para bater no YouTube
                     resposta = requests.post(
-                        "http://127.0.0.1:8000/api/classificar-spotify", 
+                        "http://127.0.0.1:8000/api/classificar-youtube", 
                         json={"nome_musica": nome_musica}
                     )
                     dados = resposta.json()
@@ -32,16 +36,16 @@ with aba_spotify:
                         st.success(f"🎵 Gênero Detectado: **{dados['resultado']['genero_predominante']}**")
                         st.info(f"Nível de Certeza: {dados['resultado']['confianca_porcentagem']}%")
                         
-                        # Bônus: Coloca o player de 30s do Spotify na tela para o usuário ouvir!
-                        st.write("Ouça a prévia analisada:")
-                        st.audio(dados['preview_url'])
+                        # 4. Trocamos o player de áudio pelo vídeo do YouTube embutido na tela!
+                        st.write("Assista ao clipe oficial:")
+                        st.video(dados['youtube_url'])
                     else:
-                        st.error(f"Ops! {dados.get('detail', 'Música não encontrada ou sem amostra.')}")
+                        st.error(f"Ops! {dados.get('detail', 'Erro ao processar a música.')}")
                         
                 except Exception as e:
-                    st.error("Erro de conexão! O servidor FastAPI está ligado?")
+                    st.error(f"Erro real da máquina: {e}")
 
-# --- ABA 2: UPLOAD DE ARQUIVO (O que já tínhamos feito) ---
+# --- ABA 2: UPLOAD DE ARQUIVO (Mantida igual) ---
 with aba_upload:
     st.write("Ou envie um arquivo de áudio direto do seu computador (.wav, .mp3).")
     arquivo_upado = st.file_uploader("Escolha um arquivo", type=["wav", "mp3", "flac"])
@@ -61,4 +65,4 @@ with aba_upload:
                     else:
                         st.error("Ops! A API retornou um erro.")
                 except Exception as e:
-                    st.error("Erro de conexão! O servidor FastAPI está ligado?")
+                    st.error(f"Erro real da máquina: {e}")
