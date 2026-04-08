@@ -1,0 +1,15 @@
+# Ignorar arquivos de cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignorar ambientes virtuais (se você estiver usando venv)
+venv/
+env/
+.env
+
+# Ignorar a pasta de áudios temporários da nossa API
+temp_audio/
+
+# Ignorar arquivos do Mac (se aplicável)
+.DS_Store
