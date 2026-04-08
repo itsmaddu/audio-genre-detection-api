@@ -17,7 +17,6 @@ def procurar_e_baixar_youtube(pesquisa: str, pasta_destino: str):
         'outtmpl': os.path.join(pasta_destino, 'temp_yt_full.%(ext)s'),
         'noplaylist': True,
         'quiet': True,
-        'default_search': 'ytsearch', # Diz ao yt-dlp que é uma pesquisa e não um link
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -28,8 +27,8 @@ def procurar_e_baixar_youtube(pesquisa: str, pasta_destino: str):
     try:
         # 1. Faz a pesquisa e o download
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            # ytsearch1 significa: pegue apenas o 1º resultado da pesquisa
-            info = ydl.extract_info(f"ytsearch1:{pesquisa}", download=True)
+            # scsearch1 significa: pesquise no SoundCloud e pegue o 1º resultado
+            info = ydl.extract_info(f"scsearch1:{pesquisa}", download=True)
             
             # Acessa os dados do vídeo encontrado
             video_info = info['entries'][0] if 'entries' in info else info
