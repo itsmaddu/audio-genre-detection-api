@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.express as px
 import os
-from main import classificar_genero, DIRETORIO_TEMP
+from main import classificar_genero
 from services.youtube_service import buscar_e_baixar_audio
 
 st.set_page_config(page_title="Classificador Musical", page_icon="🎧")
