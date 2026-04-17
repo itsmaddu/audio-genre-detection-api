@@ -9,8 +9,9 @@ if not os.path.exists(DIRETORIO_TEMP):
 
 # Carrega o modelo de IA (O Hugging Face vai baixar isso no primeiro boot)
 # Usando um modelo popular de classificação de gênero
+
 print("Carregando motor de IA...")
-pipe = pipeline("audio-classification", model="mit-ashwin/wav2vec2-lg-marsyas-gtzan")
+pipe = pipeline("audio-classification", model="anton-l/wav2vec2-base-superb-gtzan")
 
 def classificar_genero(caminho_audio):
     """
