@@ -1,22 +1,15 @@
-import torch
 from transformers import pipeline
 import os
 
+# Definimos o diretório para evitar erros de importação
 DIRETORIO_TEMP = "temp_audio"
 
-print("Iniciando motor de IA...")
-try:
-    pipe = pipeline("audio-classification", model="superb/wav2vec2-base-superb-gtzan")
-except Exception as e:
-    pipe = None
-    print(f"Erro ao carregar modelo: {e}")
-
 def classificar_genero(caminho_audio):
-    if pipe is None:
-        return {"sucesso": False, "erro": "A IA não carregou corretamente. Verifique os Logs."}
-    
     try:
-        # Realiza a classificação
+        # Carregamos a IA direto aqui para garantir que ela use o cache do servidor
+        # Usaremos o modelo 'anton-l', que é muito leve e estável
+        pipe = pipeline("audio-classification", model="anton-l/wav2vec2-base-superb-gtzan")
+        
         resultados = pipe(caminho_audio, top_k=None)
         
         return {
@@ -24,4 +17,5 @@ def classificar_genero(caminho_audio):
             "dados": resultados
         }
     except Exception as e:
+        # Se falhar, ele vai nos dizer o motivo real (ex: falta de memória)
         return {"sucesso": False, "erro": str(e)}
