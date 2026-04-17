@@ -10,7 +10,7 @@ st.set_page_config(page_title="Classificador Musical", page_icon="🎧")
 caminho_local = None 
 
 st.markdown("# 🎧 Classificador de Gêneros Musicais")
-st.write("Desenvolvido por Duda. Link público e estável!")
+st.write("Desenvolvido por Maddu. Link público e estável!")
 
 busca = st.text_input("Qual música você quer analisar?", placeholder="Ex: Dynamite - BTS")
 

@@ -1,11 +1,8 @@
-fastapi
-pydantic
-pydub
-python-dotenv
-requests
-streamlit
-transformers
-yt_dlp
+transformers>=4.30.0
+huggingface_hub>=0.16.0
 torch
 librosa
+streamlit
 plotly
+yt-dlp
+pydub
