@@ -2,20 +2,18 @@ import torch
 from transformers import pipeline
 import os
 
-DIRETORIO_TEMP = "temp_audio"
-if not os.path.exists(DIRETORIO_TEMP):
-    os.makedirs(DIRETORIO_TEMP)
-
 def classificar_genero(caminho_audio):
     try:
-        # Carrega o modelo só na hora de usar (evita crash no boot)
-        pipe = pipeline("audio-classification", model="superb/wav2vec2-base-superb-sid")
-        resultado = pipe(caminho_audio)
-        top_result = resultado[0]
+        # Modelo focado em Gênero Musical (GTZAN)
+        pipe = pipeline("audio-classification", model="dima806/music-genre-classification")
+        
+        # Pedimos para retornar todos os gêneros (top_k=None)
+        resultados = pipe(caminho_audio, top_k=None)
+        
         return {
-            "genero_predominante": top_result['label'].capitalize(),
-            "confianca_porcentagem": round(top_result['score'] * 100, 2)
+            "sucesso": True,
+            "dados": resultados # Retorna a lista completa para o gráfico
         }
     except Exception as e:
-        return {"genero_predominante": f"Erro: {str(e)}", "confianca_porcentagem": 0}
+        return {"sucesso": False, "erro": str(e)}
     

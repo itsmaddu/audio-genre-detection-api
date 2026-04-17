@@ -8,3 +8,4 @@ transformers
 yt_dlp
 torch
 librosa
+plotly
