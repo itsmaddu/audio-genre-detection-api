@@ -11,7 +11,7 @@ if not os.path.exists(DIRETORIO_TEMP):
 # Usando um modelo popular de classificação de gênero
 
 print("Carregando motor de IA...")
-pipe = pipeline("audio-classification", model="anton-l/wav2vec2-base-superb-gtzan")
+pipe = pipeline("audio-classification", model="dima806/music-genre-classification")
 
 def classificar_genero(caminho_audio):
     """
