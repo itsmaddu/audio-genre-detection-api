@@ -1,0 +1,10 @@
+fastapi
+pydantic
+pydub
+python-dotenv
+requests
+streamlit
+transformers
+yt_dlp
+torch
+librosa
