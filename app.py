@@ -3,6 +3,7 @@ import plotly.express as px
 import os
 from main import classificar_genero
 from services.youtube_service import buscar_e_baixar_audio
+from pydub import AudioSegment
 
 # Configuração da página
 st.set_page_config(page_title="Classificador Musical", page_icon="🎧")
@@ -43,18 +44,29 @@ with aba_busca:
 
 # --- ABA 2: UPLOAD DE ARQUIVO LOCAL ---
 with aba_upload:
-    arquivo_mp3 = st.file_uploader("Escolha uma música do seu computador", type=["mp3"])
-    
-    if arquivo_mp3 is not None:
-        if st.button("Classificar Arquivo Carregado 🎶"):
-            with st.spinner("Processando o seu arquivo..."):
-                # Salva o arquivo temporariamente no servidor para a IA ler
-                caminho_local = os.path.join(DIRETORIO_TEMP, arquivo_mp3.name)
-                with open(caminho_local, "wb") as f:
+    arquivo_mp3 = st.file_uploader("Escolha um arquivo MP3", type=["mp3"])
+    if st.button("Classificar Arquivo Carregado 🎶"):
+        if arquivo_mp3:
+            with st.spinner("Processando e isolando o refrão do seu arquivo..."):
+                
+                # Salva o arquivo original primeiro
+                caminho_original = os.path.join(DIRETORIO_TEMP, "original_" + arquivo_mp3.name)
+                with open(caminho_original, "wb") as f:
                     f.write(arquivo_mp3.getbuffer())
                 
+                # Define o caminho final que a IA vai ler
+                caminho_local = os.path.join(DIRETORIO_TEMP, "cut_" + arquivo_mp3.name)
+                
+                # Aplica o corte para pegar a batida principal (40s a 70s)
+                audio = AudioSegment.from_file(caminho_original)
+                inicio = 40 * 1000
+                fim = 70 * 1000
+                audio[inicio:fim].export(caminho_local, format="mp3")
+                
                 nome_musica = arquivo_mp3.name
-                st.success(f"✅ Arquivo carregado: {nome_musica}")
+                st.success(f"✅ Arquivo processado e refrão isolado: {nome_musica}")
+        else:
+            st.warning("Por favor, selecione um arquivo MP3.")
 
 # --- LÓGICA DE PROCESSAMENTO DA IA (Comum às duas formas de entrada) ---
 if caminho_local and os.path.exists(caminho_local):
