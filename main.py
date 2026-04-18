@@ -1,5 +1,4 @@
 import os
-import torch
 from transformers import pipeline
 
 
@@ -10,9 +9,10 @@ def classificar_genero(caminho_audio):
         
         token_hf = os.getenv("HF_TOKEN")
         
+        # Modelo m-a-p: Rápido, leve e excelente para Gêneros Musicais
         pipe = pipeline(
             "audio-classification", 
-            model="MIT/ast-finetuned-gtzan",
+            model="m-a-p/music-genre-classification",
             token=token_hf
         )
         
@@ -22,7 +22,6 @@ def classificar_genero(caminho_audio):
             "sucesso": True,
             "dados": resultados
         }
-        
     except Exception as e:
-        
+       
         return {"sucesso": False, "erro": str(e)}
