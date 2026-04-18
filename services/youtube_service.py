@@ -34,12 +34,9 @@ def buscar_e_baixar_audio(pesquisa: str):
 
         # Cortando os 30 segundos
         audio = AudioSegment.from_file(caminho_original)
-        audio[:30000].export(caminho_30s, format="mp3")
+        inicio_refrao = 40 * 1000 # 40 segundos em milissegundos
+        fim_refrao = 70 * 1000
         
-        if os.path.exists(caminho_original):
-            os.remove(caminho_original)
-
-        return {"sucesso": True, "caminho": caminho_30s, "titulo": titulo}
-
+        audio[inicio_refrao:fim_refrao].export(caminho_30s, format="mp3")
     except Exception as e:
-        return {"sucesso": False, "erro": str(e)}
+        print(f"Erro: {e}")
