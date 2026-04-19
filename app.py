@@ -108,4 +108,4 @@ if caminho_local and os.path.exists(caminho_local):
             st.error(f"Erro na análise da IA: {resultado_ia.get('erro')}")
 
 st.markdown("---")
-st.write("Feito com ❤️ por [Maddu](https://github.com/Maddu)")
+st.write("Feito com ❤️ por [Maddu](https://github.com/itsmaddu)")
