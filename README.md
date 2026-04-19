@@ -1,3 +1,13 @@
+---
+title: Classificador Musical
+emoji: 🎧
+colorFrom: purple
+colorTo: blue
+sdk: streamlit
+app_file: app.py
+pinned: false
+---
+
 # 🎧 Classificador de Gêneros Musicais com IA
 
 Um projeto full-stack focado na extração e classificação de características de áudio utilizando modelos de Machine Learning. A aplicação recebe músicas (via busca ou upload de arquivo) e utiliza a arquitetura Hubert para retornar a probabilidade matemática do gênero musical predominante.
