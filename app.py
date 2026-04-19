@@ -21,14 +21,9 @@ aba_busca, aba_upload = st.tabs(["🔍 Buscar Música", "📁 Enviar Arquivo MP3
 
 # --- ABA 1: BUSCA ---
 with aba_busca:
-    # O st.form é o segredo para o botão "Enter" do teclado funcionar!
     with st.form("form_busca"):
         busca = st.text_input("Qual música você quer analisar?", placeholder="Ex: Dynamite - BTS")
-        
-        # Controle de Volume no Backend (em decibéis)
-        ajuste_volume = st.slider("Ajuste de Volume da Prévia (dB)", min_value=-20, max_value=20, value=0, help="0 é o volume original. Valores negativos deixam mais baixo.")
-        
-        # O botão de submit do formulário
+        # Mantemos o botão dentro do form para o "Enter" continuar funcionando
         submit_busca = st.form_submit_button("Pesquisar e Classificar 🚀")
 
     if submit_busca:
@@ -39,13 +34,6 @@ with aba_busca:
                 if resultado_download["sucesso"]:
                     caminho_local = resultado_download["caminho"]
                     nome_musica = resultado_download["titulo"]
-                    
-                    # Se o usuário mexeu no volume, a gente altera a matriz do áudio
-                    if ajuste_volume != 0:
-                        audio = AudioSegment.from_file(caminho_local)
-                        audio = audio + ajuste_volume # A matemática pura do Pydub!
-                        audio.export(caminho_local, format="mp3")
-                        
                     st.success(f"✅ Encontrado: {nome_musica}")
                 else:
                     st.error(f"Erro no download: {resultado_download.get('erro')}")
@@ -56,7 +44,6 @@ with aba_busca:
 with aba_upload:
     with st.form("form_upload"):
         arquivo_mp3 = st.file_uploader("Escolha uma música do seu computador", type=["mp3"])
-        ajuste_volume_up = st.slider("Ajuste de Volume da Prévia (dB)", min_value=-20, max_value=20, value=0)
         submit_upload = st.form_submit_button("Classificar Arquivo Carregado 🎶")
     
     if submit_upload:
@@ -73,12 +60,8 @@ with aba_upload:
                 inicio = 40 * 1000
                 fim = 70 * 1000
                 audio_cortado = audio[inicio:fim]
-                
-                # Ajuste de Volume
-                if ajuste_volume_up != 0:
-                    audio_cortado = audio_cortado + ajuste_volume_up
-                    
                 audio_cortado.export(caminho_local, format="mp3")
+                
                 nome_musica = arquivo_mp3.name
                 st.success(f"✅ Arquivo processado: {nome_musica}")
         else:
@@ -118,9 +101,11 @@ if caminho_local and os.path.exists(caminho_local):
             
             st.plotly_chart(fig)
             
-            # O áudio vai tocar já com o volume alterado pelo código!
+            # --- O "PULO DO GATO" PARA UX (Leigos) ---
+            st.info("🔊 **Dica:** Passe o mouse no ícone de alto-falante (no canto direito do player abaixo) para ajustar o volume na hora!")
             st.audio(caminho_local)
         else:
             st.error(f"Erro na análise da IA: {resultado_ia.get('erro')}")
 
 st.markdown("---")
+st.write("Feito com ❤️ por [Maddu](https://github.com/Maddu)")
