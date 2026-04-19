@@ -58,17 +58,18 @@ Basta acessar o link do **Live Demo** no topo deste repositório, pesquisar o no
 ```bash
 git clone [https://github.com/itsmaddu/classificador-musical.git](https://github.com/itsmaddu/classificador-musical.git)
 cd classificador-musical
+```
 
 2. Instale as dependências rigorosamente como no `requirements.txt` para evitar conflitos de versão:
 ```bash
 pip install -r requirements.txt
+```
 
 3. Configure a Autenticação do Modelo:
-
--Linux/Mac: export HF_TOKEN="seu_token_aqui"
-
--Windows (CMD): set HF_TOKEN="seu_token_aqui"
+   - **Linux/Mac**: `export HF_TOKEN="seu_token_aqui"`
+   - **Windows (CMD)**: `set HF_TOKEN="seu_token_aqui"`
 
 4. Inicie o servidor local:
-
-- streamlit run app.py
+```bash
+streamlit run app.py
+```
